@@ -1,8 +1,4 @@
-const express = require('express')
-const app = express()
-
-app.get("/api",(req,res) => {
-    res.json({"users": ["userOne", "userTwo", "userThree"]})
-})
-
-app.listen(5000, () => { console.log("Server started on port 5000")})
+const app = require('./app');
+const PORT = process.env.PORT | 5000;
+//app.listen(8080, () => console.log('server listening on port 8080'));
+app.listen(PORT, () => console.log(`Listening at ${PORT}`));
