@@ -10,6 +10,7 @@ import SignUpPage from "./pages/SignUpPage";
 import AccountPage from "./pages/AccountPage";
 import CreateRoutinePage from "./pages/CreateRoutinePage";
 import BeginRoutinePage from "./pages/BeginRoutinePage";
+import DashboardPage from "./pages/DashboardPage";
 
 const App = () => {
   const [input, setInput] = useState("");
@@ -69,7 +70,7 @@ const App = () => {
           path="/beginroutine"
           element={<BeginRoutinePage createdWorkouts={createdWorkouts} />}
         />
-        
+        <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/comments" element={<CommentsPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/account" element={<AccountPage />} />
