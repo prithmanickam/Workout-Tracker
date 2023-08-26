@@ -9,17 +9,21 @@ import CommentsPage from "./pages/CommentsPage";
 import SignUpPage from "./pages/SignUpPage";
 import AccountPage from "./pages/AccountPage";
 import CreateRoutinePage from "./pages/CreateRoutinePage";
+import BeginRoutinePage from "./pages/BeginRoutinePage";
 
 const App = () => {
   const [input, setInput] = useState("");
   const [tasks, setTasks] = useState([]);
   const [updateUI, setUpdateUI] = useState(false);
   const [updateId, setUpdateId] = useState(null);
+  const [createdWorkouts, setCreatedWorkouts] = useState([]);
+  const [workoutHistory, setWorkoutHistory] = useState([]);
 
   useEffect(() => {
     axios.get(`${baseURL}/get`).then((res) => {
       console.log(res.data);
       setTasks(res.data);
+      setCreatedWorkouts(res.data)
     });
   }, [updateUI]);
 
@@ -61,7 +65,10 @@ const App = () => {
           element={isLoggedIn == "true" ? <AccountPage /> : <LoginPage />}
         />
         <Route path="/createroutine" element={<CreateRoutinePage />} />
-    
+        <Route
+          path="/beginroutine"
+          element={<BeginRoutinePage createdWorkouts={createdWorkouts} />}
+        />
         
         <Route path="/comments" element={<CommentsPage />} />
         <Route path="/signup" element={<SignUpPage />} />
