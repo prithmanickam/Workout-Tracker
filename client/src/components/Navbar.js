@@ -14,9 +14,8 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from "react-router-dom";
 
-const pages = ['Create Music', 'Dashboard', 'View All Music', 'Comments'];
+const pages = ['Dashboard', 'Create Routine', 'Begin Routine', 'View All Routines', 'Recommendations', 'Comments'];
 const settings = ['Account', 'Logout'];
-
 
 
 function ResponsiveAppBar() {
@@ -60,7 +59,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            Melody Share
+            Workout Tracker
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -92,9 +91,9 @@ function ResponsiveAppBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
+              {pages.map((page) => ( 
                 <MenuItem key={page} onClick={handleCloseNavMenu} >
-                  <Typography textAlign="center" onClick={() => navigate(`/${page.toLowerCase()}`)}>{page}</Typography>
+                  <Typography textAlign="center" onClick={() => navigate(`/${page.toLowerCase().replace(/\s+/g, '')}`)}>{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -116,14 +115,14 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            WorkoutTracker
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
                 key={page}
                 
-                onClick={() => navigate(`/${page.toLowerCase()}`)}
+                onClick={() => navigate(`/${page.toLowerCase().replace(/\s+/g, '')}`)}
                 sx={{ my: 2, color: 'black', display: 'block' }}
               >
                 {page}
@@ -155,7 +154,7 @@ function ResponsiveAppBar() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={() => navigate(`/${setting.toLowerCase()}`)}>{setting}</Typography>
+                  <Typography textAlign="center" onClick={() => navigate(`/${setting.toLowerCase().replace(/\s+/g, '')}`)}>{setting}</Typography>
                 </MenuItem>
               ))}
             </Menu>

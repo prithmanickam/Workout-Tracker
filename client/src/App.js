@@ -3,11 +3,12 @@ import List from "./components/List";
 import axios from "axios";
 import { baseURL } from "./utils/constant";
 import Navbar from "./components/Navbar";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes} from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import CommentsPage from "./pages/CommentsPage";
 import SignUpPage from "./pages/SignUpPage";
 import AccountPage from "./pages/AccountPage";
+import CreateRoutinePage from "./pages/CreateRoutinePage";
 
 const App = () => {
   const [input, setInput] = useState("");
@@ -59,6 +60,9 @@ const App = () => {
           path="/"
           element={isLoggedIn == "true" ? <AccountPage /> : <LoginPage />}
         />
+        <Route path="/createroutine" element={<CreateRoutinePage />} />
+    
+        
         <Route path="/comments" element={<CommentsPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/account" element={<AccountPage />} />
