@@ -17,6 +17,8 @@ import InfoIcon from "@mui/icons-material/Info";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PublishIcon from "@mui/icons-material/Publish";
 import CompareIcon from "@mui/icons-material/Compare";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import defaultProfilePicture from "../images/default-profile.jpg";
 
 import {
   Radar,
@@ -162,6 +164,8 @@ const friendsData = [
 ];
 
 const DashboardPage = () => {
+  const [profilePicture, setProfilePicture] = React.useState(null);
+
   const [openInfoDialog, setOpenInfoDialog] = React.useState(false);
   const [deleteRoutineDialogOpen, setDeleteRoutineDialogOpen] =
     React.useState(false);
@@ -258,13 +262,28 @@ const DashboardPage = () => {
             alignItems: "center",
           }}
         >
-          {/* Circular Icon */}
-          <CircularProgress
-            variant="static"
-            value={70}
-            size={150}
-            thickness={5}
-            style={{ marginBottom: "10px" }}
+          {/* Profile Picture */}
+          <IconButton
+            component="label"
+            htmlFor="profile-picture-input"
+          >
+            <CloudUploadIcon />
+            <input
+              id="profile-picture-input"
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={(event) => {
+                const selectedFile = event.target.files[0];
+                setProfilePicture(selectedFile);
+              }}
+            />
+          </IconButton>
+          <img
+            src={profilePicture ? URL.createObjectURL(profilePicture) : defaultProfilePicture}
+            alt="Profile"
+            style={{ width: "150px", height: "150px", borderRadius: "50%", border: "2px solid #8884d8", }}
+
           />
 
           {/* User Name */}
