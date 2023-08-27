@@ -53,14 +53,43 @@ const barChartData = [
 ];
 
 // Sample data for routine history
-const routineHistoryData = [
+const initalRoutineHistoryData = [
   {
-    title: "Full Body Workout",
+    title: "Efficient Full Body Workout",
     workouts: [{ title: "Push-ups", duration: "3 sets x 15 reps" }],
     time: 45,
     date: "2023-08-25",
   },
   // Add more routine history data
+];
+
+// Sample data for saved routines
+const initalSavedRoutineData = [
+  {
+    title: "Efficient Full Body Workout",
+    workouts: [{ title: "Push-ups", duration: "3 sets x 15 reps" }],
+  },
+  {
+    title: "Inner chest workout",
+    workouts: [{ title: "chest flys", duration: "3 sets x 10 reps" }],
+  },
+  // Add more saved routine data
+];
+
+// Sample data for created routines
+const initalCreatedRoutineData = [
+  {
+    title: "My Cool Chest Workout",
+    workouts: [
+      { title: "benchpress", duration: "3 sets x 15 reps" },
+      { title: "incline dummbell press", duration: "3 sets x 10 reps" },
+    ],
+  },
+  {
+    title: "My legs Workout",
+    workouts: [{ title: "squats", duration: "4 sets x 10 reps" }],
+  },
+  // Add more created routine data
 ];
 
 const DashboardPage = () => {
@@ -72,6 +101,16 @@ const DashboardPage = () => {
   const [selectedRoutine, setSelectedRoutine] = React.useState(null);
   const [routineToDelete, setRoutineToDelete] = React.useState(null);
   const [routineToPublish, setRoutineToPublish] = React.useState(null);
+
+  const [routineHistoryData, setRoutineHistoryData] = React.useState(
+    initalRoutineHistoryData
+  );
+  const [createdRoutineData, setCreatedRoutineData] = React.useState(
+    initalCreatedRoutineData
+  );
+  const [savedRoutineData, setSavedRoutineData] = React.useState(
+    initalSavedRoutineData
+  );
 
   const handleInfoClick = (routine) => {
     setSelectedRoutine(routine);
@@ -203,7 +242,7 @@ const DashboardPage = () => {
           </Typography>
           <List>
             {/* Placeholder data */}
-            {routineHistoryData.map((routine, index) => (
+            {createdRoutineData.map((routine, index) => (
               <ListItem
                 key={index}
                 button
@@ -254,7 +293,7 @@ const DashboardPage = () => {
           </Typography>
           <List>
             {/* Placeholder data */}
-            {routineHistoryData.map((routine, index) => (
+            {savedRoutineData.map((routine, index) => (
               <ListItem
                 key={index}
                 button
@@ -323,7 +362,8 @@ const DashboardPage = () => {
           {routineToPublish && (
             <div>
               <Typography>
-                Are you sure you want to Publish "{routineToPublish.title}" routine to all users?
+                Are you sure you want to Publish "{routineToPublish.title}"
+                routine to all users?
               </Typography>
               <Button
                 variant="contained"
@@ -360,7 +400,20 @@ const DashboardPage = () => {
                 variant="contained"
                 color="primary"
                 onClick={() => {
-                  /* Handle deletion */
+                  if (routineToDelete) {
+                    if (createdRoutineData.includes(routineToDelete)) {
+                      const updatedRoutines = createdRoutineData.filter(
+                        (routine) => routine !== routineToDelete
+                      );
+                      setCreatedRoutineData(updatedRoutines);
+                    } else if (savedRoutineData.includes(routineToDelete)) {
+                      const updatedSavedRoutines = savedRoutineData.filter(
+                        (routine) => routine !== routineToDelete
+                      );
+                      setSavedRoutineData(updatedSavedRoutines);
+                    }
+                    handleCloseDeleteDialog();
+                  }
                 }}
               >
                 Delete
