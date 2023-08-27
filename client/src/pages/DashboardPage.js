@@ -56,9 +56,29 @@ const barChartData = [
 const initalRoutineHistoryData = [
   {
     title: "Efficient Full Body Workout",
-    workouts: [{ title: "Push-ups", duration: "3 sets x 15 reps" }],
+    workouts: [{ title: "Push-ups", duration: "3 sets x 15 reps", area:"arms" },
+               { title: "squats", duration: "4 sets x 15 reps", area:"legs" },
+               { title: "Jumping Jacks", duration: "4 sets x 20 reps", area: "Cardio" }],
     time: 45,
     date: "2023-08-25",
+  },
+  {
+    title: "My Legs Workout",
+    workouts: [{ title: "Push-ups", duration: "3 sets x 15 reps", area: "legs" },
+               { title: "calves", duration: "3 sets x till failure", area: "legs" }],
+    time: 30,
+    date: "2023-08-25",
+  },
+  {
+    title: "Intense Cardio Workout",
+    summary:
+      "Elevate your heart rate and burn calories with this cardio routine.",
+    workouts: [
+      { title: "Running", duration: "20 minutes", area: "Cardio" },
+      
+    ],
+    time: 20,
+    date: "2023-08-24",
   },
   // Add more routine history data
 ];

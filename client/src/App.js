@@ -12,6 +12,7 @@ import CreateRoutinePage from "./pages/CreateRoutinePage";
 import BeginRoutinePage from "./pages/BeginRoutinePage";
 import DashboardPage from "./pages/DashboardPage";
 import ViewAllRoutinesPage from "./pages/ViewAllRoutinesPage";
+import RecommendationsPage from "./pages/RecommendationsPage";
 
 const App = () => {
   const [input, setInput] = useState("");
@@ -73,6 +74,7 @@ const App = () => {
         />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/viewallroutines" element={<ViewAllRoutinesPage />} />
+        <Route path="/recommendations" element={<RecommendationsPage />} />
         <Route path="/comments" element={<CommentsPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/account" element={<AccountPage />} />
