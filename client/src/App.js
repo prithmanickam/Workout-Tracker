@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
 import List from "./components/List";
 import axios from "axios";
 import { baseURL } from "./utils/constant";
 import Navbar from "./components/Navbar";
-import { Route, Routes} from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import CommentsPage from "./pages/CommentsPage";
 import SignUpPage from "./pages/SignUpPage";
@@ -13,6 +13,8 @@ import BeginRoutinePage from "./pages/BeginRoutinePage";
 import DashboardPage from "./pages/DashboardPage";
 import ViewAllRoutinesPage from "./pages/ViewAllRoutinesPage";
 import RecommendationsPage from "./pages/RecommendationsPage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   const [input, setInput] = useState("");
@@ -26,7 +28,7 @@ const App = () => {
     axios.get(`${baseURL}/get`).then((res) => {
       console.log(res.data);
       setTasks(res.data);
-      setCreatedWorkouts(res.data)
+      setCreatedWorkouts(res.data);
     });
   }, [updateUI]);
 
@@ -65,20 +67,39 @@ const App = () => {
         <Route
           exact
           path="/"
-          element={isLoggedIn == "true" ? <AccountPage /> : <LoginPage />}
+          element={isLoggedIn === "true" ? <AccountPage /> : <LoginPage />}
         />
-        <Route path="/createroutine" element={<CreateRoutinePage />} />
-        <Route
-          path="/beginroutine"
-          element={<BeginRoutinePage createdWorkouts={createdWorkouts} />}
-        />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/viewallroutines" element={<ViewAllRoutinesPage />} />
-        <Route path="/recommendations" element={<RecommendationsPage />} />
-        <Route path="/comments" element={<CommentsPage />} />
         <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/account" element={<AccountPage />} />
+        <Route path="/viewallroutines" element={<ViewAllRoutinesPage />} />
+        <Route path="/comments" element={<CommentsPage />} />
+
+        {/* Protected Routes */}
+        {isLoggedIn === "true" ? (
+          <>
+            <Route path="/createroutine" element={<CreateRoutinePage />} />
+            <Route
+              path="/beginroutine"
+              element={<BeginRoutinePage createdWorkouts={createdWorkouts} />}
+            />
+            <Route path="/dashboard" element={<DashboardPage />} />
+
+            <Route path="/recommendations" element={<RecommendationsPage />} />
+            <Route path="/account" element={<AccountPage />} />
+          </>
+        ) : (
+          // Redirect to login page if not logged in
+          <Route
+            path="*"
+            element={
+              <>
+                {/* Show a toast message */}
+                <Navigate to="/login" />
+              </>
+            }
+          />
+        )}
       </Routes>
+      <ToastContainer />
     </>
   );
 };

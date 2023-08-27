@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Typography,
   Select,
@@ -15,50 +15,76 @@ import {
   ListItemText,
   Container,
   Paper,
-} from '@mui/material';
-import InfoIcon from '@mui/icons-material/Info';
+} from "@mui/material";
+import InfoIcon from "@mui/icons-material/Info";
 
 const BeginRoutinePage = ({ createdWorkouts }) => {
-  const [selectedRoutine, setSelectedRoutine] = useState(null);
+  const [selectedCreatedRoutine, setSelectedCreatedRoutine] = useState(null);
+  const [selectedSavedRoutine, setSelectedSavedRoutine] = useState(null);
   const [showWorkoutDetails, setShowWorkoutDetails] = useState(false);
   const [workoutIndex, setWorkoutIndex] = useState(0);
   const [openInfoDialog, setOpenInfoDialog] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0); // in seconds
 
-  const predefinedWorkouts = [
+  const createdRoutineData = [
     {
-      id: 'predefined-1',
-      title: 'Full Chest Workout',
-      numWorkouts: '2',
-      summary: 'Intense chest workout, lots of reps',
+      title: "My Cool Chest Workout",
+      numWorkouts: "2",
+      summary: "Target all of Chest.",
       workouts: [
+        { title: "Bench Press", duration: "3 sets x 15 reps", area: "Chest" },
         {
-          title: 'Bench Press',
-          area: '',
-          setRepDuration: '4 sets 12 reps',
-          tips: 'go slowly on the way down, and fast up',
-          image: '',
-        },
-        {
-          title: 'Lateral Raises',
-          area: 'Chest',
-          setRepDuration: '4 sets 12 reps',
-          tips: '',
-          image: '',
+          title: "Incline Dumbbell Press",
+          duration: "3 sets x 10 reps",
+          area: "Chest",
         },
       ],
     },
-    // Add more predefined routines as needed
+    {
+      title: "My legs Workout",
+      numWorkouts: "1",
+      summary: "Quads isolation",
+      workouts: [
+        { title: "squats", duration: "4 sets x 10 reps", area: "Legs" },
+      ],
+    },
+    // Add more created routine data
   ];
 
-  const allWorkouts = [...createdWorkouts, ...predefinedWorkouts];
+  const savedRoutineData = [
+    {
+      title: "Efficient Full Body Workout",
+      numWorkouts: "1",
+      summary: "lots of everything",
+      workouts: [
+        { title: "Push-ups", duration: "3 sets x 15 reps", area: "Arms" },
+      ],
+    },
+    {
+      title: "Inner chest workout",
+      numWorkouts: "2",
+      summary: "lots of everything",
+      workouts: [
+        { title: "chest flys", duration: "3 sets x 10 reps", area: "Chest" },
+        {
+          title: "incline dumbell",
+          duration: "3 sets x 10 reps",
+          area: "Chest",
+        },
+      ],
+    },
+    // Add more saved routine data
+  ];
+
+  const allCreatedWorkouts = createdRoutineData;
+  const allSavedWorkouts = savedRoutineData;
 
   useEffect(() => {
     let timerInterval;
 
     if (showWorkoutDetails) {
       timerInterval = setInterval(() => {
-        setElapsedTime(prevTime => prevTime + 1);
+        setElapsedTime((prevTime) => prevTime + 1);
       }, 1000);
     }
 
@@ -67,10 +93,24 @@ const BeginRoutinePage = ({ createdWorkouts }) => {
     };
   }, [showWorkoutDetails]);
 
-  const handleSelectRoutine = (event) => {
+  const handleSelectCreatedRoutine = (event) => {
     const selectedId = event.target.value;
-    const selected = allWorkouts.find(workout => workout.id === selectedId);
-    setSelectedRoutine(selected);
+    const selected = allCreatedWorkouts.find(
+      (workout) => workout.id === selectedId
+    );
+    setSelectedCreatedRoutine(selected);
+    setSelectedSavedRoutine(null);
+    setShowWorkoutDetails(false);
+    setElapsedTime(0); // Reset timer when selecting a new routine
+  };
+
+  const handleSelectSavedRoutine = (event) => {
+    const selectedId = event.target.value;
+    const selected = allSavedWorkouts.find(
+      (workout) => workout.id === selectedId
+    );
+    setSelectedSavedRoutine(selected);
+    setSelectedCreatedRoutine(null);
     setShowWorkoutDetails(false);
     setElapsedTime(0); // Reset timer when selecting a new routine
   };
@@ -81,48 +121,111 @@ const BeginRoutinePage = ({ createdWorkouts }) => {
   };
 
   const handleNextWorkout = () => {
-    if (workoutIndex < selectedRoutine.workouts.length - 1) {
+    if (
+      workoutIndex <
+      (selectedCreatedRoutine || selectedSavedRoutine).workouts.length - 1
+    ) {
       setWorkoutIndex(workoutIndex + 1);
     } else {
-      // End of routine, perform actions
       setShowWorkoutDetails(false);
-      setElapsedTime(0); // Reset timer when routine ends
-      console.log(`Total Workout Time: ${Math.floor(elapsedTime / 60)}:${(elapsedTime % 60).toString().padStart(2, '0')}`);
+      setElapsedTime(0);
+      console.log(
+        `Total Workout Time: ${Math.floor(elapsedTime / 60)}:${(
+          elapsedTime % 60
+        )
+          .toString()
+          .padStart(2, "0")}`
+      );
     }
   };
 
   return (
-    <Container maxWidth="sm" style={{ textAlign: 'center', marginTop: '20px' }}>
+    <Container maxWidth="sm" style={{ textAlign: "center", marginTop: "20px" }}>
       <Typography variant="h4">Select Workout Routine</Typography>
-      <FormControl fullWidth>
-        <InputLabel>From created workouts</InputLabel>
-        <Select
-          value={selectedRoutine ? selectedRoutine.id : ''}
-          onChange={handleSelectRoutine}
-        >
-          {allWorkouts.map(routine => (
-            <MenuItem key={routine.id} value={routine.id}>
-              {routine.title}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "10px",
+        }}
+      >
+        <FormControl fullWidth style={{ marginRight: "10px" }}>
+          <InputLabel>From created workouts</InputLabel>
+          <Select
+            value={selectedCreatedRoutine ? selectedCreatedRoutine.id : ""}
+            onChange={handleSelectCreatedRoutine}
+          >
+            {allCreatedWorkouts.map((routine) => (
+              <MenuItem key={routine.id} value={routine.id}>
+                {routine.title}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel>From saved workouts</InputLabel>
+          <Select
+            value={selectedSavedRoutine ? selectedSavedRoutine.id : ""}
+            onChange={handleSelectSavedRoutine}
+          >
+            {allSavedWorkouts.map((routine) => (
+              <MenuItem key={routine.id} value={routine.id}>
+                {routine.title}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
 
-      {selectedRoutine && (
-        <Paper style={{ border: '2px solid grey', padding: '20px', borderRadius: '10px', marginTop: '20px' }}>
+      {selectedCreatedRoutine && (
+        <Paper
+          style={{
+            border: "2px solid grey",
+            padding: "20px",
+            borderRadius: "10px",
+            marginTop: "20px",
+          }}
+        >
           <Typography variant="h6" gutterBottom>
             Routine Details
           </Typography>
           <Typography variant="subtitle1">
-            Title: {selectedRoutine.title}
+            Title: {selectedCreatedRoutine.title}
           </Typography>
           <Typography variant="subtitle1">
-            Summary: {selectedRoutine.summary}
+            Summary: {selectedCreatedRoutine.summary}
           </Typography>
           <Typography variant="subtitle1">
-            No. of Workouts: {selectedRoutine.numWorkouts}
+            No. of Workouts: {selectedCreatedRoutine.numWorkouts}
           </Typography>
+          <IconButton onClick={() => setOpenInfoDialog(true)}>
+            <InfoIcon />
+          </IconButton>
+        </Paper>
+      )}
 
+      {selectedSavedRoutine && (
+        <Paper
+          style={{
+            border: "2px solid grey",
+            padding: "20px",
+            borderRadius: "10px",
+            marginTop: "20px",
+          }}
+        >
+          <Typography variant="h6" gutterBottom>
+            Routine Details
+          </Typography>
+          <Typography variant="subtitle1">
+            Title: {selectedSavedRoutine.title}
+          </Typography>
+          <Typography variant="subtitle1">
+            Summary: {selectedSavedRoutine.summary}
+          </Typography>
+          <Typography variant="subtitle1">
+            No. of Workouts: {selectedSavedRoutine.numWorkouts}
+          </Typography>
           <IconButton onClick={() => setOpenInfoDialog(true)}>
             <InfoIcon />
           </IconButton>
@@ -134,48 +237,76 @@ const BeginRoutinePage = ({ createdWorkouts }) => {
         <DialogTitle>Workout Details</DialogTitle>
         <DialogContent>
           <List>
-            {selectedRoutine &&
-              selectedRoutine.workouts.map((workout, index) => (
+            {selectedCreatedRoutine &&
+              selectedCreatedRoutine.workouts.map((workout, index) => (
                 <ListItem key={index}>
-                  <ListItemText primary={workout.title} secondary={workout.setRepDuration} />
+                  <ListItemText
+                    primary={workout.title}
+                    secondary={workout.setRepDuration}
+                  />
                 </ListItem>
               ))}
           </List>
         </DialogContent>
       </Dialog>
-      
-      {/* Timer and Workout Display */}
+
       {showWorkoutDetails ? (
-        <Container maxWidth="sm" style={{ textAlign: 'center', marginTop: '20px' }}>
-          <Typography variant="h6" style={{ marginBottom: '10px' }}>
-            Elapsed Time: {Math.floor(elapsedTime / 60)}:{(elapsedTime % 60).toString().padStart(2, '0')}
+        <Container
+          maxWidth="sm"
+          style={{ textAlign: "center", marginTop: "20px" }}
+        >
+          <Typography variant="h6" style={{ marginBottom: "10px" }}>
+            Elapsed Time: {Math.floor(elapsedTime / 60)}:
+            {(elapsedTime % 60).toString().padStart(2, "0")}
           </Typography>
-          <Paper style={{ border: '2px solid blue', padding: '20px', borderRadius: '10px', marginTop: '20px' }}>
+          <Paper
+            style={{
+              border: "2px solid blue",
+              padding: "20px",
+              borderRadius: "10px",
+              marginTop: "20px",
+            }}
+          >
             <Typography variant="h6">Workout {workoutIndex + 1}</Typography>
             <Typography variant="subtitle1">
-              Title: {selectedRoutine.workouts[workoutIndex].title}
+              Title:{" "}
+              {
+                (selectedCreatedRoutine || selectedSavedRoutine).workouts[
+                  workoutIndex
+                ].title
+              }
             </Typography>
             <Typography variant="subtitle1">
-              Area: {selectedRoutine.workouts[workoutIndex].area}
+              Area:{" "}
+              {
+                (selectedCreatedRoutine || selectedSavedRoutine).workouts[
+                  workoutIndex
+                ].area
+              }
+            </Typography>
+            <Typography variant="subtitle1">
+              Duration:{" "}
+              {
+                (selectedCreatedRoutine || selectedSavedRoutine).workouts[
+                  workoutIndex
+                ].duration
+              }
             </Typography>
             {/* Include other workout details here */}
           </Paper>
-          {workoutIndex !== selectedRoutine.workouts.length - 1 && (
-            <Button onClick={handleNextWorkout}>
-              Next Workout
-            </Button>
-          )}
-          {workoutIndex === selectedRoutine.workouts.length - 1 && (
-            <Button onClick={handleNextWorkout}>
-              End Workout
-            </Button>
-          )}
+          {workoutIndex !==
+            (selectedCreatedRoutine || selectedSavedRoutine).workouts.length -
+              1 && <Button onClick={handleNextWorkout}>Next Workout</Button>}
+          {workoutIndex ===
+            (selectedCreatedRoutine || selectedSavedRoutine).workouts.length -
+              1 && <Button onClick={handleNextWorkout}>End Workout</Button>}
         </Container>
       ) : (
-        <Container maxWidth="sm" style={{ textAlign: 'center', marginTop: '20px' }}>
-          <Button onClick={handleBeginClick}>
-            Begin Workout
-          </Button>
+        <Container
+          maxWidth="sm"
+          style={{ textAlign: "center", marginTop: "20px" }}
+        >
+          <Button onClick={handleBeginClick}>Begin Workout</Button>
         </Container>
       )}
     </Container>

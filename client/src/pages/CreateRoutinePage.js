@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Typography,
   TextField,
@@ -7,15 +7,17 @@ import {
   InputLabel,
   Select,
   MenuItem,
-} from '@mui/material';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+} from "@mui/material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 const CreateWorkoutRoutine = () => {
   const [routineData, setRoutineData] = useState({
-    title: '',
-    summary: '',
-    numWorkouts: '',
-    workouts: [{ title: '', area: '', setRepDuration: '', tips: '', image: '' }],
+    title: "",
+    summary: "",
+    numWorkouts: "",
+    workouts: [
+      { title: "", area: "", setRepDuration: "", tips: "", image: "" },
+    ],
   });
 
   const handleInputChange = (index, event) => {
@@ -28,18 +30,34 @@ const CreateWorkoutRoutine = () => {
   const handleAddWorkout = () => {
     setRoutineData({
       ...routineData,
-      workouts: [...routineData.workouts, { title: '', area: '', setRepDuration: '', tips: '', image: '' }],
+      workouts: [
+        ...routineData.workouts,
+        { title: "", area: "", setRepDuration: "", tips: "", image: "" },
+      ],
     });
   };
 
   const handleSaveRoutine = () => {
     console.log(routineData);
-    // You can perform any further actions here, like storing data in a database.
+    // store data in the database.
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
-      <div style={{ outline: '2px solid black', padding: '20px', borderRadius: '10px', margin: '20px' }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        flexDirection: "column",
+      }}
+    >
+      <div
+        style={{
+          outline: "2px solid black",
+          padding: "20px",
+          borderRadius: "10px",
+          margin: "20px",
+        }}
+      >
         <Typography variant="h4" gutterBottom>
           Create your workout routine
         </Typography>
@@ -48,14 +66,18 @@ const CreateWorkoutRoutine = () => {
           label="Title"
           fullWidth
           value={routineData.title}
-          onChange={(e) => setRoutineData({ ...routineData, title: e.target.value })}
+          onChange={(e) =>
+            setRoutineData({ ...routineData, title: e.target.value })
+          }
         />
 
         <TextField
           label="Summary (max 120 characters)"
           fullWidth
           value={routineData.summary}
-          onChange={(e) => setRoutineData({ ...routineData, summary: e.target.value })}
+          onChange={(e) =>
+            setRoutineData({ ...routineData, summary: e.target.value })
+          }
         />
 
         <TextField
@@ -63,14 +85,24 @@ const CreateWorkoutRoutine = () => {
           type="number"
           fullWidth
           value={routineData.numWorkouts}
-          onChange={(e) => setRoutineData({ ...routineData, numWorkouts: e.target.value })}
+          onChange={(e) =>
+            setRoutineData({ ...routineData, numWorkouts: e.target.value })
+          }
         />
       </div>
 
       {routineData.workouts.map((workout, index) => (
-        <div key={index} style={{ outline: '2px solid blue', padding: '20px', borderRadius: '10px', margin: '20px' }}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div style={{ marginRight: '20px' }}>
+        <div
+          key={index}
+          style={{
+            outline: "2px solid blue",
+            padding: "20px",
+            borderRadius: "10px",
+            margin: "20px",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ marginRight: "20px" }}>
               <input
                 type="file"
                 accept="image/*"
@@ -81,12 +113,25 @@ const CreateWorkoutRoutine = () => {
                     const imageData = reader.result;
                     const updatedWorkouts = [...routineData.workouts];
                     updatedWorkouts[index].image = imageData;
-                    setRoutineData({ ...routineData, workouts: updatedWorkouts });
+                    setRoutineData({
+                      ...routineData,
+                      workouts: updatedWorkouts,
+                    });
                   };
                   reader.readAsDataURL(image);
                 }}
               />
-              {workout.image && <img src={workout.image} alt={`Workout ${index + 1}`} style={{ width: '100px', height: '100px', borderRadius: '50%' }} />}
+              {workout.image && (
+                <img
+                  src={workout.image}
+                  alt={`Workout ${index + 1}`}
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    borderRadius: "50%",
+                  }}
+                />
+              )}
             </div>
             <div>
               <TextField
@@ -138,7 +183,7 @@ const CreateWorkoutRoutine = () => {
         color="primary"
         startIcon={<AddCircleIcon />}
         onClick={handleAddWorkout}
-        style={{ marginTop: '20px', alignSelf: 'center' }}
+        style={{ marginTop: "20px", alignSelf: "center" }}
       >
         Add another workout
       </Button>
@@ -147,7 +192,7 @@ const CreateWorkoutRoutine = () => {
         variant="contained"
         color="primary"
         onClick={handleSaveRoutine}
-        style={{ marginTop: '20px', alignSelf: 'center' }}
+        style={{ marginTop: "20px", alignSelf: "center" }}
       >
         Save your workout routine
       </Button>

@@ -19,6 +19,8 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { baseURL } from "../utils/constant";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const LoginPage = () => {
   //const signIn = useSignIn();
@@ -55,7 +57,8 @@ const LoginPage = () => {
           console.log(data, "userRegister");
           //if login is successful we store the token, and var logged in set to true
           if (data.status === "ok") {
-            alert("login successful");
+            toast.success("Logged in successfully!");
+            //alert("login successful");
 
             window.localStorage.setItem("token", data.token); // This was set to data.data earlier, so the token was set to `undefined`
             window.localStorage.setItem("loggedIn", true);
@@ -73,7 +76,7 @@ const LoginPage = () => {
       <Grid
         container
         //component="main"
-        sx={{ height: "90vh", width: "100%", px: 4}}
+        sx={{ height: "90vh", width: "100%", px: 4 }}
       >
         <CssBaseline />
         <Grid

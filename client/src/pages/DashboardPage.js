@@ -11,7 +11,6 @@ import {
   DialogTitle,
   DialogContent,
   Button,
-  CircularProgress,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -30,14 +29,14 @@ import {
   BarChart,
   XAxis,
   YAxis,
-  ResponsiveContainer, // Add this import
-  Tooltip, // Add this import
+  ResponsiveContainer,
+  Tooltip,
 } from "recharts";
 
 // Sample data for radar chart
 const radarData = [
   { category: "Core", value: 4 },
-  { category: "Chest", value: 3 },
+  { category: "Chest", value: 5 },
   { category: "Back", value: 2 },
   { category: "Legs", value: 5 },
   { category: "Cardio", value: 2 },
@@ -47,17 +46,32 @@ const radarData = [
 
 // Sample data for bar chart
 const barChartData = [
-  { day: "Mon", time: 45 },
+  { day: "Mon", time: 0 },
   { day: "Tue", time: 60 },
-  { day: "Wed", time: 30 },
+  { day: "Wed", time: 0 },
   { day: "Thu", time: 75 },
-  { day: "Fri", time: 90 },
+  { day: "Fri", time: 0 },
   { day: "Sat", time: 120 },
-  { day: "Sun", time: 60 },
+  { day: "Sun", time: 1 },
 ];
 
 // Sample data for routine history
 const initalRoutineHistoryData = [
+  {
+    title: "My Cool Chest Workout",
+    numWorkouts: "2",
+    summary: "Target all of Chest.",
+    workouts: [
+      { title: "Bench Press", duration: "3 sets x 15 reps", area: "Chest" },
+      {
+        title: "Incline Dumbbell Press",
+        duration: "3 sets x 10 reps",
+        area: "Chest",
+      },
+    ],
+    time: 1,
+    date: "2023-08-27",
+  },
   {
     title: "Efficient Full Body Workout",
     workouts: [
@@ -65,8 +79,8 @@ const initalRoutineHistoryData = [
       { title: "squats", duration: "4 sets x 15 reps", area: "legs" },
       { title: "Jumping Jacks", duration: "4 sets x 20 reps", area: "Cardio" },
     ],
-    time: 45,
-    date: "2023-08-25",
+    time: 120,
+    date: "2023-08-26",
   },
   {
     title: "My Legs Workout",
@@ -74,16 +88,19 @@ const initalRoutineHistoryData = [
       { title: "Push-ups", duration: "3 sets x 15 reps", area: "legs" },
       { title: "calves", duration: "3 sets x till failure", area: "legs" },
     ],
-    time: 30,
-    date: "2023-08-25",
+    time: 75,
+    date: "2023-08-24",
   },
   {
-    title: "Intense Cardio Workout",
-    summary:
-      "Elevate your heart rate and burn calories with this cardio routine.",
-    workouts: [{ title: "Running", duration: "20 minutes", area: "Cardio" }],
-    time: 20,
-    date: "2023-08-24",
+    title: "Inner chest workout",
+    numWorkouts: "2",
+    summary: "chest isolation",
+    workouts: [
+      { title: "chest flys", duration: "3 sets x 10 reps", area: "Chest" },
+      { title: "incline dumbell", duration: "3 sets x 10 reps", area: "Chest" },
+    ],
+    time: 60,
+    date: "2023-08-22",
   },
   // Add more routine history data
 ];
@@ -92,11 +109,20 @@ const initalRoutineHistoryData = [
 const initalSavedRoutineData = [
   {
     title: "Efficient Full Body Workout",
-    workouts: [{ title: "Push-ups", duration: "3 sets x 15 reps" }],
+    numWorkouts: "1",
+    summary: "lots of everything",
+    workouts: [
+      { title: "Push-ups", duration: "3 sets x 15 reps", area: "Arms" },
+    ],
   },
   {
     title: "Inner chest workout",
-    workouts: [{ title: "chest flys", duration: "3 sets x 10 reps" }],
+    numWorkouts: "2",
+    summary: "lots of everything",
+    workouts: [
+      { title: "chest flys", duration: "3 sets x 10 reps", area: "Chest" },
+      { title: "incline dumbell", duration: "3 sets x 10 reps", area: "Chest" },
+    ],
   },
   // Add more saved routine data
 ];
@@ -105,14 +131,22 @@ const initalSavedRoutineData = [
 const initalCreatedRoutineData = [
   {
     title: "My Cool Chest Workout",
+    numWorkouts: "2",
+    summary: "Target all of Chest.",
     workouts: [
-      { title: "benchpress", duration: "3 sets x 15 reps" },
-      { title: "incline dummbell press", duration: "3 sets x 10 reps" },
+      { title: "Bench Press", duration: "3 sets x 15 reps", area: "Chest" },
+      {
+        title: "Incline Dumbbell Press",
+        duration: "3 sets x 10 reps",
+        area: "Chest",
+      },
     ],
   },
   {
     title: "My legs Workout",
-    workouts: [{ title: "squats", duration: "4 sets x 10 reps" }],
+    numWorkouts: "1",
+    summary: "Quads isolation",
+    workouts: [{ title: "squats", duration: "4 sets x 10 reps", area: "Legs" }],
   },
   // Add more created routine data
 ];
@@ -131,12 +165,12 @@ const friendsData = [
     ],
     barChartData: [
       { day: "Mon", time: 60 },
-      { day: "Tue", time: 45 },
-      { day: "Wed", time: 50 },
+      { day: "Tue", time: 0 },
+      { day: "Wed", time: 0 },
       { day: "Thu", time: 70 },
-      { day: "Fri", time: 80 },
+      { day: "Fri", time: 0 },
       { day: "Sat", time: 90 },
-      { day: "Sun", time: 50 },
+      { day: "Sun", time: 0 },
     ],
   },
   {
@@ -151,13 +185,13 @@ const friendsData = [
       { category: "Shoulders", value: 3 },
     ],
     barChartData: [
-      { day: "Mon", time: 50 },
+      { day: "Mon", time: 0 },
       { day: "Tue", time: 70 },
-      { day: "Wed", time: 40 },
+      { day: "Wed", time: 0 },
       { day: "Thu", time: 80 },
       { day: "Fri", time: 70 },
       { day: "Sat", time: 100 },
-      { day: "Sun", time: 60 },
+      { day: "Sun", time: 0 },
     ],
   },
   // Add more friend data
@@ -263,10 +297,7 @@ const DashboardPage = () => {
           }}
         >
           {/* Profile Picture */}
-          <IconButton
-            component="label"
-            htmlFor="profile-picture-input"
-          >
+          <IconButton component="label" htmlFor="profile-picture-input">
             <CloudUploadIcon />
             <input
               id="profile-picture-input"
@@ -280,14 +311,22 @@ const DashboardPage = () => {
             />
           </IconButton>
           <img
-            src={profilePicture ? URL.createObjectURL(profilePicture) : defaultProfilePicture}
+            src={
+              profilePicture
+                ? URL.createObjectURL(profilePicture)
+                : defaultProfilePicture
+            }
             alt="Profile"
-            style={{ width: "150px", height: "150px", borderRadius: "50%", border: "2px solid #8884d8", }}
-
+            style={{
+              width: "150px",
+              height: "150px",
+              borderRadius: "50%",
+              border: "2px solid #8884d8",
+            }}
           />
 
           {/* User Name */}
-          <Typography variant="h5">John Johnson</Typography>
+          <Typography variant="h5">Prith</Typography>
         </Paper>
 
         {/* Bar Chart */}
@@ -525,11 +564,11 @@ const DashboardPage = () => {
               </Typography>
               <div style={{ display: "flex" }}>
                 <ResponsiveContainer width={300} height={300}>
-                  <BarChart data={barChartData} layout="vertical">
+                  <BarChart data={barChartData}>
                     {" "}
                     {/* Use your own data here */}
-                    <XAxis dataKey="time" />
-                    <YAxis dataKey="day" type="category" />
+                    <XAxis dataKey="day" />
+                    <YAxis />
                     <Tooltip />
                     <Bar dataKey="time" fill="#8884d8" />{" "}
                     {/* Your data color */}
@@ -539,10 +578,9 @@ const DashboardPage = () => {
                   <ResponsiveContainer width={300} height={300}>
                     <BarChart
                       data={selectedFriend.barChartData} // Friend's data
-                      layout="vertical"
                     >
-                      <XAxis dataKey="time" />
-                      <YAxis dataKey="day" type="category" />
+                      <XAxis dataKey="day" />
+                      <YAxis />
                       <Tooltip />
                       <Bar dataKey="time" fill="#ff0000" />{" "}
                       {/* Friend's data color */}
@@ -598,6 +636,7 @@ const DashboardPage = () => {
               <Typography variant="subtitle1">
                 Date: {selectedRoutine.date}
               </Typography>
+
               {/* Display workout details */}
               <List>
                 {selectedRoutine.workouts.map((workout, index) => (
@@ -606,6 +645,9 @@ const DashboardPage = () => {
                       primary={workout.title}
                       secondary={workout.duration}
                     />
+                    <Typography variant="body2" color="textSecondary">
+                      Area: {workout.area}
+                    </Typography>
                   </ListItem>
                 ))}
               </List>

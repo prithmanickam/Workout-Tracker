@@ -1,9 +1,35 @@
 import React from "react";
-import { Container, Typography, List, ListItem, ListItemText, IconButton, Dialog, DialogTitle, DialogContent } from "@mui/material";
+import {
+  Container,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+} from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 
+// Sample data for routine history
 const initalRoutineHistoryData = [
+  {
+    title: "My Cool Chest Workout",
+    numWorkouts: "2",
+    summary: "Target all of Chest.",
+    workouts: [
+      { title: "Bench Press", duration: "3 sets x 15 reps", area: "Chest" },
+      {
+        title: "Incline Dumbbell Press",
+        duration: "3 sets x 10 reps",
+        area: "Chest",
+      },
+    ],
+    time: 1,
+    date: "2023-08-27",
+  },
   {
     title: "Efficient Full Body Workout",
     workouts: [
@@ -11,8 +37,8 @@ const initalRoutineHistoryData = [
       { title: "squats", duration: "4 sets x 15 reps", area: "legs" },
       { title: "Jumping Jacks", duration: "4 sets x 20 reps", area: "Cardio" },
     ],
-    time: 45,
-    date: "2023-08-25",
+    time: 120,
+    date: "2023-08-26",
   },
   {
     title: "My Legs Workout",
@@ -20,21 +46,22 @@ const initalRoutineHistoryData = [
       { title: "Push-ups", duration: "3 sets x 15 reps", area: "legs" },
       { title: "calves", duration: "3 sets x till failure", area: "legs" },
     ],
-    time: 30,
-    date: "2023-08-25",
+    time: 75,
+    date: "2023-08-24",
   },
   {
-    title: "Intense Cardio Workout",
-    summary: "Elevate your heart rate and burn calories with this cardio routine.",
+    title: "Inner chest workout",
+    numWorkouts: "2",
+    summary: "chest isolation",
     workouts: [
-      { title: "Running", duration: "20 minutes", area: "Cardio" },
+      { title: "chest flys", duration: "3 sets x 10 reps", area: "Chest" },
+      { title: "incline dumbell", duration: "3 sets x 10 reps", area: "Chest" },
     ],
-    likes: 10,
-    user: "CardioKing123",
+    time: 60,
+    date: "2023-08-22",
   },
   // Add more routine history data
 ];
-
 const initialRoutinesData = [
   {
     title: "Chest Workout",
@@ -171,10 +198,18 @@ const RecommendationsPage = () => {
 
   // Filter and recommend routines based on most worked out areas
   const recommendedRoutines = initialRoutinesData.filter((routine) => {
-    const routineAreas = routine.workouts.map((workout) => workout.area.toLowerCase());
-    return routineAreas.some((area) => sortedWorkoutAreas.includes(area)) &&
-           !initalSavedRoutineData.some((savedRoutine) => savedRoutine.title === routine.title) &&
-           !initalCreatedRoutineData.some((createdRoutine) => createdRoutine.title === routine.title);
+    const routineAreas = routine.workouts.map((workout) =>
+      workout.area.toLowerCase()
+    );
+    return (
+      routineAreas.some((area) => sortedWorkoutAreas.includes(area)) &&
+      !initalSavedRoutineData.some(
+        (savedRoutine) => savedRoutine.title === routine.title
+      ) &&
+      !initalCreatedRoutineData.some(
+        (createdRoutine) => createdRoutine.title === routine.title
+      )
+    );
   });
 
   const [openInfoDialog, setOpenInfoDialog] = React.useState(false);
@@ -195,23 +230,22 @@ const RecommendationsPage = () => {
         Your Recommendations
       </Typography>
       <Typography variant="body1">
-        Based on the areas that you worked out the most in routines history, the 3 recommended routines are:
+        Based on the areas that you worked out the most in routines history, the
+        3 recommended routines are:
       </Typography>
       <List>
         {recommendedRoutines.slice(0, 3).map((routine, index) => (
-          <ListItem key={index}
-          style={{
+          <ListItem
+            key={index}
+            style={{
               borderRadius: "12px",
               marginBottom: "10px",
               background: "#f5f5f5",
               border: "3px solid green",
               padding: "10px",
-            }}>
-            <ListItemText
-              primary={routine.title}
-              secondary={routine.summary}
-              
-            />
+            }}
+          >
+            <ListItemText primary={routine.title} secondary={routine.summary} />
             <IconButton onClick={() => handleInfoClick(routine)}>
               <InfoIcon />
             </IconButton>
