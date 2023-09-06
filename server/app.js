@@ -22,10 +22,11 @@ mongoose
 
 const taskRoutes = require("./routes/TaskRoute");
 const authRoutes = require("./routes/AuthRoute");
+const routineRoutes = require("./routes/RoutineRoute");
 
 app.use("/api", taskRoutes);
-
 app.use("/api", authRoutes);
+app.use("/api", routineRoutes);
 
 // to make tests clearer
 app.use("/api/tasks", taskRoutes);

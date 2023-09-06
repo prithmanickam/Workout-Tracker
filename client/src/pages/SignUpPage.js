@@ -12,8 +12,9 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import toast from "react-hot-toast";
 import Card from "@mui/material/Card";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const defaultTheme = createTheme();
 
@@ -62,9 +63,9 @@ export default function SignUp() {
         .then((data) => {
           console.log(data, "userRegister");
           if (data.status == "ok") {
-            alert("Registration Successful");
+            toast.success("User Data Saved to Database");
           } else {
-            alert("Something went wrong");
+            toast.error("Something went wrong");
           }
         });
     }

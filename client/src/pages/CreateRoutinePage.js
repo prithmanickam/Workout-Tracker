@@ -9,7 +9,8 @@ import {
   MenuItem,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-
+import axios from "axios";
+import { baseURL } from "../utils/constant";
 const CreateWorkoutRoutine = () => {
   const [routineData, setRoutineData] = useState({
     title: "",
@@ -39,6 +40,9 @@ const CreateWorkoutRoutine = () => {
 
   const handleSaveRoutine = () => {
     console.log(routineData);
+    axios.post(`${baseURL}/saveCreatedRoutine`, { routines: routineData }).then((res) => {
+      console.log(res.data);
+    });
     // store data in the database.
   };
 
@@ -152,6 +156,9 @@ const CreateWorkoutRoutine = () => {
                   <MenuItem value="Core">Core</MenuItem>
                   <MenuItem value="Cardio">Cardio</MenuItem>
                   <MenuItem value="Chest">Chest</MenuItem>
+                  <MenuItem value="Legs">Legs</MenuItem>
+                  <MenuItem value="Arms">Arms</MenuItem>
+                  <MenuItem value="Back">Back</MenuItem>
                   {/* Add more options as needed */}
                 </Select>
               </FormControl>

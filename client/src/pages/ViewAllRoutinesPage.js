@@ -102,6 +102,20 @@ const initialRoutinesData = [
     likes: 12,
     user: "Joe Smith",
   },
+  {
+    title: "My Cool Chest Workout",
+    summary: "Target all of Chest.",
+    workouts: [
+      { title: "Bench Press", duration: "3 sets x 15 reps", area: "Chest" },
+      {
+        title: "Incline Dumbbell Press",
+        duration: "3 sets x 10 reps",
+        area: "Chest",
+      },
+    ],
+    likes: 0,
+    user: "Prith M",
+  }
 ];
 
 const ViewAllRoutinesPage = () => {
