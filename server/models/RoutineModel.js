@@ -39,7 +39,11 @@ const routineSchema = new mongoose.Schema({
   workouts: {
     type: [workoutSchema],
   
-  }
+  },
+  user: {
+    type: mongoose.Types.ObjectId,
+    ref: "UserInfo", // Reference to the user who created the routine
+  },
 });
 
 module.exports = mongoose.model("createdRoutine", routineSchema);

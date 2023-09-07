@@ -11,7 +11,13 @@ import {
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import axios from "axios";
 import { baseURL } from "../utils/constant";
+import { useUser } from '../context/UserContext';
+
+
+
 const CreateWorkoutRoutine = () => {
+  const { userData } = useUser();
+  
   const [routineData, setRoutineData] = useState({
     title: "",
     summary: "",
@@ -19,6 +25,7 @@ const CreateWorkoutRoutine = () => {
     workouts: [
       { title: "", area: "", setRepDuration: "", tips: "", image: "" },
     ],
+    user:userData
   });
 
   const handleInputChange = (index, event) => {

@@ -13,6 +13,7 @@ import BeginRoutinePage from "./pages/BeginRoutinePage";
 import DashboardPage from "./pages/DashboardPage";
 import ViewAllRoutinesPage from "./pages/ViewAllRoutinesPage";
 import RecommendationsPage from "./pages/RecommendationsPage";
+import { UserContextProvider } from "./context/UserContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -76,7 +77,7 @@ const App = () => {
         {/* Protected Routes */}
         {isLoggedIn === "true" ? (
           <>
-            <Route path="/createroutine" element={<CreateRoutinePage />} />
+            <Route path="/createroutine" element={<UserContextProvider> <CreateRoutinePage /> </UserContextProvider>} />
             <Route
               path="/beginroutine"
               element={<BeginRoutinePage createdWorkouts={createdWorkouts} />}
@@ -84,7 +85,7 @@ const App = () => {
             <Route path="/dashboard" element={<DashboardPage />} />
 
             <Route path="/recommendations" element={<RecommendationsPage />} />
-            <Route path="/account" element={<AccountPage />} />
+            <Route path="/account" element={<UserContextProvider> <AccountPage /> </UserContextProvider>} />
           </>
         ) : (
           // Redirect to login page if not logged in

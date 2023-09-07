@@ -58,6 +58,7 @@ const LoginPage = () => {
           //if login is successful we store the token, and var logged in set to true
           if (data.status === "ok") {
             toast.success("Logged in successfully!");
+            
             //alert("login successful");
 
             window.localStorage.setItem("token", data.token); // This was set to data.data earlier, so the token was set to `undefined`

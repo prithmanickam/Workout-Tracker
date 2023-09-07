@@ -6,11 +6,13 @@ const UserDetailsSchema = new mongoose.Schema(
     lname: String,
     email: { type: String, unique: true },
     password: String,
+
   },
   {
     collection: "UserInfo",
   }
 );
+
 
 const User = mongoose.model("UserInfo", UserDetailsSchema); // Update this line
 

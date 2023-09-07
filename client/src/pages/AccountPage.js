@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useUser } from '../context/UserContext';
 
 export default function UserDetails() {
-  const [userData, setUserData] = useState("");
+  const { userData, setUserData } = useUser();
 
   useEffect(() => {
     fetch("http://localhost:5000/api/userData", {
@@ -18,17 +19,18 @@ export default function UserDetails() {
     })
       .then((res) => res.json())
       .then((data) => {
-        //console.log(data)
-
-        console.log(data, "userData");
-        setUserData(data.data);
+        setUserData(data.data); 
       });
-  }, []);
+  }, [setUserData]);
 
   const logout = () => {
     window.localStorage.clear();
     window.location.href = "/login";
   };
+  
+  if (!userData) {
+    return <div>Loading...</div>; // You can display a loading indicator
+  }
 
   return (
     <div>
